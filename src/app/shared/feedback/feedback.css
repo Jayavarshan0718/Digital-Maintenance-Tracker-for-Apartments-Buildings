@@ -1,0 +1,91 @@
+.feedback-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.feedback-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.feedback-icon {
+  width: 32px;
+  height: 32px;
+  stroke-width: 2;
+}
+
+.feedback-modal.success .feedback-icon {
+  color: #10B981;
+}
+
+.feedback-modal.error .feedback-icon {
+  color: #EF4444;
+}
+
+.feedback-modal.info .feedback-icon {
+  color: #3B82F6;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #F3F4F6;
+}
+
+.close-btn svg {
+  width: 20px;
+  height: 20px;
+  color: #6B7280;
+  stroke-width: 2;
+}
+
+.feedback-content p {
+  margin: 0;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

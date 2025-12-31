@@ -1,0 +1,92 @@
+<div class="admin-container">
+  <div class="content-wrapper">
+    <div class="header-section">
+      <div class="title-wrapper">
+        <div class="icon-wrapper">
+          <svg class="main-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+        <h1 class="main-title gradient-text">Admin Dashboard</h1>
+      </div>
+      <p class="subtitle">Manage all maintenance requests and track system performance</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-section">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading dashboard data...</p>
+    </div>
+
+    <div *ngIf="!loading">
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-number">{{ stats.total }}</div>
+          <div class="stat-label">Total Requests</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-number">{{ stats.pending }}</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card progress">
+          <div class="stat-number">{{ stats.inProgress }}</div>
+          <div class="stat-label">In Progress</div>
+        </div>
+        <div class="stat-card completed">
+          <div class="stat-number">{{ stats.completed }}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+      </div>
+
+      <div class="requests-section">
+        <h2>All Maintenance Requests</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Resident</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let request of requests">
+                <td>#{{ request.id }}</td>
+                <td>
+                  <span class="category-badge">{{ request.category }}</span>
+                </td>
+                <td class="description-cell">{{ request.description }}</td>
+                <td>Resident {{ request.resident_id }}</td>
+                <td>{{ request.created_at | date:'short' }}</td>
+                <td>
+                  <span class="status" [ngClass]="(request.status || 'pending').toLowerCase()">
+                    {{ request.status || 'Pending' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button 
+                      class="btn-action assign" 
+                      (click)="updateRequestStatus(request.id, 'In Progress')"
+                      [disabled]="request.status === 'Completed'">
+                      Assign
+                    </button>
+                    <button 
+                      class="btn-action complete" 
+                      (click)="updateRequestStatus(request.id, 'Completed')"
+                      [disabled]="request.status === 'Completed'">
+                      Complete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

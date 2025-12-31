@@ -1,0 +1,76 @@
+<div class="signup-container">
+  <div class="signup-form">
+    <div class="form-header">
+      <h2>Sign Up</h2>
+      <p>Create your Digital Maintenance Tracker account</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input 
+          type="text" 
+          id="name"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter your full name"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input 
+          type="email" 
+          id="email"
+          [(ngModel)]="formData.email" 
+          name="email"
+          placeholder="Enter your email"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select [(ngModel)]="formData.role" name="role" required>
+          <option value="resident">Resident</option>
+          <option value="admin">Admin</option>
+          <option value="technician">Technician</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password"
+          [(ngModel)]="formData.password" 
+          name="password"
+          placeholder="Enter your password"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input 
+          type="password" 
+          id="confirmPassword"
+          [(ngModel)]="formData.confirmPassword" 
+          name="confirmPassword"
+          placeholder="Confirm your password"
+          required>
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <button type="submit" class="btn-signup" [disabled]="loading">
+        <span *ngIf="loading" class="loading-spinner"></span>
+        {{ loading ? 'Creating Account...' : 'Sign Up' }}
+      </button>
+    </form>
+
+    <div class="form-footer">
+      <p>Already have an account? <a routerLink="/signin">Sign in here</a></p>
+    </div>
+  </div>
+</div>

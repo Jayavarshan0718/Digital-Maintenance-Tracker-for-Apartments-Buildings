@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar" *ngIf="authService.isLoggedIn() && !isAuthPage()">
   <div class="nav-brand">
     <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
       <path d="M9 12l2 2 4-4"/>
@@ -11,11 +11,20 @@
   </div>
   <div class="nav-links">
     <a routerLink="new-request" routerLinkActive="active" class="nav-link">
-      ➕ New Request
+      New Request
     </a>
     <a routerLink="history" routerLinkActive="active" class="nav-link">
-      📅 Request History
+      Request History
     </a>
+    <a routerLink="admin" routerLinkActive="active" class="nav-link">
+      Admin Dashboard
+    </a>
+    <a routerLink="technician" routerLinkActive="active" class="nav-link">
+      Technician
+    </a>
+    <button class="nav-link logout-btn" (click)="logout()">
+      Logout
+    </button>
   </div>
 </nav>
 

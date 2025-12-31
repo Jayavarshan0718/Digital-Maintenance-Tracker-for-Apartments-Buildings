@@ -1,0 +1,81 @@
+<div class="technician-container">
+  <div class="content-wrapper">
+    <div class="header-section">
+      <div class="title-wrapper">
+        <div class="icon-wrapper">
+          <svg class="main-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <h1 class="main-title gradient-text">Technician Dashboard</h1>
+      </div>
+      <p class="subtitle">Manage your assigned maintenance tasks</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-section">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading your assignments...</p>
+    </div>
+
+    <div *ngIf="!loading">
+      <div class="summary-card">
+        <h3>Your Assignments</h3>
+        <p>You have {{ assignedRequests.length }} maintenance requests assigned to you</p>
+      </div>
+
+      <div *ngIf="assignedRequests.length > 0; else noAssignments" class="requests-grid">
+        <div *ngFor="let request of assignedRequests" class="request-card">
+          <div class="card-header">
+            <span class="request-id">#{{ request.id }}</span>
+            <span class="category-badge">{{ request.category }}</span>
+          </div>
+          
+          <div class="card-content">
+            <h4>{{ request.category }} Issue</h4>
+            <p class="description">{{ request.description }}</p>
+            <div class="request-meta">
+              <span class="date">{{ request.created_at | date:'short' }}</span>
+              <span class="resident">Resident {{ request.resident_id }}</span>
+            </div>
+          </div>
+
+          <div class="card-status">
+            <span class="status" [ngClass]="(request.status || 'pending').toLowerCase()">
+              {{ request.status || 'Pending' }}
+            </span>
+          </div>
+
+          <div class="card-actions">
+            <button 
+              *ngIf="!request.status || request.status === 'Pending'"
+              class="btn-start"
+              (click)="startWork(request.id)">
+              Start Work
+            </button>
+            <button 
+              *ngIf="request.status === 'In Progress'"
+              class="btn-complete"
+              (click)="completeWork(request.id)">
+              Mark Complete
+            </button>
+            <span *ngIf="request.status === 'Completed'" class="completed-badge">
+              ✓ Completed
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noAssignments>
+        <div class="empty-state">
+          <div class="empty-icon-wrapper">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3>No Assignments</h3>
+          <p>You don't have any maintenance requests assigned to you at the moment.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

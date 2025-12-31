@@ -98,6 +98,17 @@ body {
   color: white;
 }
 
+.logout-btn {
+  background: #EF4444;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #DC2626;
+  color: white;
+}
+
 main {
   min-height: calc(100vh - 88px);
   position: relative;
