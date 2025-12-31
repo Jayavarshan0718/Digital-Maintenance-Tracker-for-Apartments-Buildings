@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './signin.html',
-  styleUrls: ['./signin.css']
+  styleUrl: './signin.css'
 })
 export class SigninComponent {
   email = '';

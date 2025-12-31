@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaintenanceService } from '../../services/maintenance.service';
 
@@ -7,10 +7,10 @@ import { MaintenanceService } from '../../services/maintenance.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './technician-dashboard.html',
-  styleUrls: ['./technician-dashboard.css']
+  styleUrl: './technician-dashboard.css'
 })
-export class TechnicianDashboardComponent implements OnInit {
-  
+export class TechnicianDashboardComponent implements OnInit, AfterViewInit {
+
   assignedRequests: any[] = [];
   loading = true;
   technicianId = 1;
@@ -18,21 +18,28 @@ export class TechnicianDashboardComponent implements OnInit {
   constructor(private service: MaintenanceService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.loadAssignedRequests();
+    // Initial setup
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.loadAssignedRequests();
+    }, 100);
   }
 
   loadAssignedRequests() {
     this.loading = true;
     this.cdr.detectChanges();
+    
     this.service.getTechnicianRequests(this.technicianId).subscribe({
       next: (data: any) => {
-        console.log('Technician dashboard data:', data);
+        console.log('Technician data received:', data);
         this.assignedRequests = Array.isArray(data) ? data : [];
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error loading requests:', error);
+        console.error('Technician loading error:', error);
         this.assignedRequests = [];
         this.loading = false;
         this.cdr.detectChanges();
@@ -52,10 +59,19 @@ export class TechnicianDashboardComponent implements OnInit {
   }
 
   startWork(requestId: number) {
-    this.updateRequestStatus(requestId, 'In Progress');
+    this.updateRequestStatus(requestId, 'Assigned');
   }
 
   completeWork(requestId: number) {
-    this.updateRequestStatus(requestId, 'Completed');
+    this.updateRequestStatus(requestId, 'Resolved');
+  }
+
+  getStatusClass(status: string): string {
+    if (!status) return 'pending';
+    return status.toLowerCase().replace(' ', '-');
+  }
+
+  trackByRequestId(index: number, request: any): any {
+    return request.id || index;
   }
 }

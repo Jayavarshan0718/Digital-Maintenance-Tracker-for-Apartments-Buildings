@@ -30,11 +30,16 @@ export class MaintenanceService {
   }
 
   getAllRequests() {
-    return this.http.get(this.apiUrl, this.getHeaders());
+    return this.http.get(this.apiUrl);
   }
 
   updateRequestStatus(requestId: number, status: string) {
-    return this.http.put(`${this.apiUrl}/${requestId}/status`, { status }, this.getHeaders());
+    console.log('Service: Updating request', requestId, 'to status', status);
+    return this.http.put(`${this.apiUrl}/${requestId}/status`, { status }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 
   getTechnicianRequests(technicianId: number) {

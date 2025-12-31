@@ -8,7 +8,7 @@ import { MaintenanceService } from '../../services/maintenance.service';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './request-history.html',
-  styleUrls: ['./request-history.css']
+  styleUrl: './request-history.css'
 })
 export class RequestHistoryComponent implements OnInit {
 

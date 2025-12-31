@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './signup.html',
-  styleUrls: ['./signup.css']
+  styleUrl: './signup.css'
 })
 export class SignupComponent {
   formData = {

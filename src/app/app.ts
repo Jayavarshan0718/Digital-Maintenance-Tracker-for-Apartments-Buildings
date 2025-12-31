@@ -5,13 +5,18 @@ import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,                         // ✅ REQUIRED
   imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']                  // ✅ FIXED (plural)
 })
 export class App {
-  constructor(public authService: AuthService, private router: Router) {
-    // Ensure we're on signin page if not logged in
+
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {
+    // Redirect to signin if not logged in
     if (!this.authService.isLoggedIn() && this.router.url === '/') {
       this.router.navigate(['/signin']);
     }

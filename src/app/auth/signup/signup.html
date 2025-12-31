@@ -2,30 +2,54 @@
   <div class="signup-form">
     <div class="form-header">
       <h2>Sign Up</h2>
-      <p>Create your Digital Maintenance Tracker account</p>
+      <p>Create your account</p>
     </div>
 
-    <form (ngSubmit)="onSubmit()" class="auth-form">
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input 
-          type="text" 
-          id="name"
-          [(ngModel)]="formData.name" 
-          name="name"
-          placeholder="Enter your full name"
-          required>
+    <form (ngSubmit)="onSubmit()" class="auth-form compact-form">
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="name">Full Name</label>
+          <input 
+            type="text" 
+            id="name"
+            [(ngModel)]="formData.name" 
+            name="name"
+            placeholder="Enter your name"
+            required>
+        </div>
+        <div class="form-group half">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email"
+            [(ngModel)]="formData.email" 
+            name="email"
+            placeholder="Enter your email"
+            required>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input 
-          type="email" 
-          id="email"
-          [(ngModel)]="formData.email" 
-          name="email"
-          placeholder="Enter your email"
-          required>
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password"
+            [(ngModel)]="formData.password" 
+            name="password"
+            placeholder="Enter password"
+            required>
+        </div>
+        <div class="form-group half">
+          <label for="confirmPassword">Confirm Password</label>
+          <input 
+            type="password" 
+            id="confirmPassword"
+            [(ngModel)]="formData.confirmPassword" 
+            name="confirmPassword"
+            placeholder="Confirm password"
+            required>
+        </div>
       </div>
 
       <div class="form-group">
@@ -37,35 +61,13 @@
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password"
-          [(ngModel)]="formData.password" 
-          name="password"
-          placeholder="Enter your password"
-          required>
-      </div>
-
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input 
-          type="password" 
-          id="confirmPassword"
-          [(ngModel)]="formData.confirmPassword" 
-          name="confirmPassword"
-          placeholder="Confirm your password"
-          required>
-      </div>
-
       <div *ngIf="error" class="error-message">
         {{ error }}
       </div>
 
       <button type="submit" class="btn-signup" [disabled]="loading">
         <span *ngIf="loading" class="loading-spinner"></span>
-        {{ loading ? 'Creating Account...' : 'Sign Up' }}
+        {{ loading ? 'Creating...' : 'Sign Up' }}
       </button>
     </form>
 

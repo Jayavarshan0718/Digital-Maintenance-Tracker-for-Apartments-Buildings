@@ -1,81 +1,128 @@
-<div class="technician-container">
-  <div class="content-wrapper">
-    <div class="header-section">
-      <div class="title-wrapper">
-        <div class="icon-wrapper">
-          <svg class="main-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+<div class="technician-workspace">
+  <!-- Header Section -->
+  <div class="workspace-header">
+    <div class="header-content">
+      <div class="title-section">
+        <div class="tech-icon-wrapper">
+          <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
           </svg>
         </div>
-        <h1 class="main-title gradient-text">Technician Dashboard</h1>
+        <div>
+          <h1 class="workspace-title">Technician Workspace</h1>
+          <p class="workspace-subtitle">Manage your maintenance assignments</p>
+        </div>
       </div>
-      <p class="subtitle">Manage your assigned maintenance tasks</p>
+      <div class="header-stats">
+        <div class="quick-stat">
+          <span class="stat-value">{{ assignedRequests.length }}</span>
+          <span class="stat-label">Active Tasks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-workspace">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading your assignments...</p>
+  </div>
+
+  <!-- Workspace Content -->
+  <div *ngIf="!loading" class="workspace-content">
+    
+    <!-- Empty State -->
+    <div *ngIf="assignedRequests.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 12l2 2 4-4"/>
+          <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+          <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+        </svg>
+      </div>
+      <h3>All caught up!</h3>
+      <p>No maintenance tasks assigned at the moment.</p>
     </div>
 
-    <div *ngIf="loading" class="loading-section">
-      <div class="loading-spinner"></div>
-      <p class="loading-text">Loading your assignments...</p>
-    </div>
-
-    <div *ngIf="!loading">
-      <div class="summary-card">
-        <h3>Your Assignments</h3>
-        <p>You have {{ assignedRequests.length }} maintenance requests assigned to you</p>
-      </div>
-
-      <div *ngIf="assignedRequests.length > 0; else noAssignments" class="requests-grid">
-        <div *ngFor="let request of assignedRequests" class="request-card">
-          <div class="card-header">
-            <span class="request-id">#{{ request.id }}</span>
-            <span class="category-badge">{{ request.category }}</span>
+    <!-- Task Cards -->
+    <div *ngIf="assignedRequests.length > 0" class="tasks-grid">
+      <div *ngFor="let request of assignedRequests; trackBy: trackByRequestId" class="task-card">
+        
+        <!-- Task Header -->
+        <div class="task-header">
+          <div class="task-id">
+            <span class="id-chip">#{{ request.id }}</span>
+            <span class="priority-indicator high"></span>
           </div>
-          
-          <div class="card-content">
-            <h4>{{ request.category }} Issue</h4>
-            <p class="description">{{ request.description }}</p>
-            <div class="request-meta">
-              <span class="date">{{ request.created_at | date:'short' }}</span>
-              <span class="resident">Resident {{ request.resident_id }}</span>
-            </div>
-          </div>
-
-          <div class="card-status">
-            <span class="status" [ngClass]="(request.status || 'pending').toLowerCase()">
+          <div class="task-status">
+            <span class="status-badge" [ngClass]="getStatusClass(request.status)">
               {{ request.status || 'Pending' }}
             </span>
           </div>
+        </div>
 
-          <div class="card-actions">
-            <button 
-              *ngIf="!request.status || request.status === 'Pending'"
-              class="btn-start"
-              (click)="startWork(request.id)">
-              Start Work
-            </button>
-            <button 
-              *ngIf="request.status === 'In Progress'"
-              class="btn-complete"
-              (click)="completeWork(request.id)">
-              Mark Complete
-            </button>
-            <span *ngIf="request.status === 'Completed'" class="completed-badge">
-              ✓ Completed
-            </span>
+        <!-- Task Content -->
+        <div class="task-content">
+          <div class="task-category">
+            <span class="category-icon">🔧</span>
+            <span class="category-name">{{ request.category }}</span>
+          </div>
+          
+          <h3 class="task-title">{{ request.category }} Request</h3>
+          <p class="task-description">{{ request.description }}</p>
+          
+          <div class="task-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+              </svg>
+              <span>Resident {{ request.resident_id }}</span>
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+              <span>{{ request.created_at | date:'MMM d' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Actions -->
+        <div class="task-actions">
+          <button 
+            *ngIf="!request.status || request.status === 'Pending'"
+            class="action-btn start-btn"
+            (click)="startWork(request.id)"
+            title="Start working on this task">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polygon points="5,3 19,12 5,21 5,3"/>
+            </svg>
+            Start Work
+          </button>
+
+          <button 
+            *ngIf="request.status === 'Assigned'"
+            class="action-btn complete-btn"
+            (click)="completeWork(request.id)"
+            title="Mark task as completed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22,4 12,14.01 9,11.01"/>
+            </svg>
+            Complete Task
+          </button>
+
+          <div *ngIf="request.status === 'Resolved'" class="completed-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22,4 12,14.01 9,11.01"/>
+            </svg>
+            Task Completed
           </div>
         </div>
       </div>
-
-      <ng-template #noAssignments>
-        <div class="empty-state">
-          <div class="empty-icon-wrapper">
-            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
-          </div>
-          <h3>No Assignments</h3>
-          <p>You don't have any maintenance requests assigned to you at the moment.</p>
-        </div>
-      </ng-template>
     </div>
   </div>
 </div>

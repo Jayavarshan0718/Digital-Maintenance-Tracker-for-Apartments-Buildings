@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './feedback.html',
-  styleUrls: ['./feedback.css']
+  styleUrl: './feedback.css'
 })
 export class FeedbackComponent {
   @Input() message: string = '';
